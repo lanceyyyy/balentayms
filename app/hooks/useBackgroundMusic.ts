@@ -14,7 +14,7 @@ export function useBackgroundMusic() {
     startedRef.current = true;
 
     try {
-      const audio = new Audio('/audio/background-music.mp3');
+      const audio = new Audio('/audio/song.mp3');
       audio.loop = true;
       audio.volume = 0;
       globalAudio = audio;
