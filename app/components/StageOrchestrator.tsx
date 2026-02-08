@@ -14,7 +14,7 @@ const TheQuestionStage = dynamic(() => import('./stage5/TheQuestionStage'), { ss
 const HeartCursorTrail = dynamic(() => import('./shared/HeartCursorTrail'), { ssr: false });
 
 const VOLUME_MAP: Record<string, number> = {
-  'draw-heart': 0,
+  'draw-heart': 0.2,
   'timeline': 0.25,
   'write-with-me': 0.25,
   'build-moment': 0.15,
@@ -33,9 +33,17 @@ export default function StageOrchestrator() {
     }
   }, [currentStage, adjustVolume]);
 
-  // Start music callback passed to Stage 1
+  // Start music on first user interaction (click/touch)
+  useEffect(() => {
+    const handleInteraction = () => {
+      startMusic();
+      window.removeEventListener('pointerdown', handleInteraction);
+    };
+    window.addEventListener('pointerdown', handleInteraction);
+    return () => window.removeEventListener('pointerdown', handleInteraction);
+  }, [startMusic]);
+
   const handleStage1Complete = () => {
-    startMusic();
     advanceStage();
   };
 
